@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FERRO SEARCH - Explore. Detect. Recognize.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050a18;--bg2:#0a1430;--cy:#19e3ff;--bl:#3b7bff;--tx:#dbe8ff;--mu:#8fa4c7;--ok:#00ff9c;--bad:#ff4d6d;--gl:rgba(18,32,70,.55);--bd:rgba(25,227,255,.28)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;font-family:Sora,system-ui,Segoe UI,Arial,sans-serif;color:var(--tx);background:radial-gradient(1200px 600px at 80% -10%,#10306a55,transparent),radial-gradient(900px 500px at -10% 30%,#0a4a6a44,transparent),var(--bg);line-height:1.6}
+nav{position:sticky;top:0;z-index:20;display:flex;gap:4px;align-items:center;padding:10px 20px;background:rgba(5,10,24,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);overflow-x:auto}
+nav b{color:var(--cy);letter-spacing:.14em;margin-right:18px;white-space:nowrap;text-shadow:0 0 12px var(--cy)}
+nav a{color:var(--mu);text-decoration:none;font-size:.78rem;padding:6px 11px;border-radius:8px;white-space:nowrap;letter-spacing:.06em}
+nav a:hover{color:var(--cy);background:#19e3ff14}
+section{max-width:1100px;margin:0 auto;padding:70px 20px 20px}
+h1{font-size:clamp(2.6rem,8vw,5.5rem);margin:0;letter-spacing:.08em;font-weight:800;background:linear-gradient(90deg,#fff,var(--cy) 50%,var(--bl));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px #19e3ff55)}
+h2{font-size:1.9rem;margin:0 0 6px;color:#fff}
+h2::after{content:"";display:block;width:70px;height:3px;margin-top:8px;background:linear-gradient(90deg,var(--cy),var(--bl));box-shadow:0 0 10px var(--cy)}
+h3{margin:.2em 0;color:var(--cy)}
+p.lead{color:var(--mu);max-width:720px}
+.tag{font-size:1.25rem;color:var(--cy);letter-spacing:.2em;margin:8px 0 14px}
+.card{background:var(--gl);border:1px solid var(--bd);border-radius:16px;padding:20px;backdrop-filter:blur(10px);box-shadow:0 0 24px #19e3ff12,inset 0 0 30px #3b7bff0d}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.btn{font:inherit;font-size:.82rem;letter-spacing:.07em;font-weight:600;cursor:pointer;color:#fff;border:1px solid var(--cy);background:linear-gradient(135deg,#0b3a8a,#0a5a9a);padding:11px 18px;border-radius:10px;text-decoration:none;display:inline-block;box-shadow:0 0 14px #19e3ff40;transition:.2s}
+.btn:hover{box-shadow:0 0 24px var(--cy);transform:translateY(-1px)}
+.btn.ghost{background:transparent;box-shadow:none}
+.btn.danger{border-color:var(--bad);background:#4a0f22;box-shadow:0 0 12px #ff4d6d40}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;align-items:center}
+.pipe{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:26px 0}
+.st{border:1px solid var(--bd);background:var(--gl);padding:9px 14px;border-radius:10px;font-size:.78rem;letter-spacing:.06em;color:#fff}
+.ar{color:var(--cy);transform:rotate(-90deg);font-size:1.1rem}
+.hero{padding-top:90px;text-align:center}
+.hero p.lead{margin:0 auto}
+.cvs{position:relative}
+.imgs{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.imgs img,.imgs canvas,.out canvas{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--bd);background:#02060f;display:block}
+.out canvas{width:100%}
+label.up{display:block;font-size:.8rem;color:var(--mu);margin-bottom:6px}
+input[type=file]{width:100%;color:var(--mu);font:inherit;font-size:.8rem}
+select,input[type=range]{font:inherit}
+select{background:#0a1a3c;color:#fff;border:1px solid var(--bd);border-radius:8px;padding:8px}
+input[type=range]{accent-color:var(--cy);width:220px}
+.msg{min-height:1.4em;margin:8px 0;font-size:.88rem}
+.msg.err{color:var(--bad)}.msg.info{color:var(--cy)}
+.banner{display:inline-block;border:1px dashed var(--cy);color:var(--cy);padding:6px 12px;border-radius:8px;font-size:.78rem;margin:6px 0}
+.banner.warn{border-color:#ffb020;color:#ffb020}
+.stats{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-top:14px}
+.stat{border:1px solid var(--bd);border-radius:12px;padding:10px 14px;background:#06102a}
+.stat small{display:block;color:var(--mu);font-size:.68rem;letter-spacing:.1em}
+.stat span{font-size:1.15rem;font-weight:600;color:#fff}
+.stat span.ok{color:var(--ok);text-shadow:0 0 10px var(--ok)}.stat span.no{color:var(--bad)}
+.tblw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:720px}
+th,td{padding:11px 12px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top}
+th{color:var(--cy);background:#0a1a3c}td:first-child{color:#fff;font-weight:600}
+ul{color:var(--mu)}li{margin:4px 0}
+code{color:var(--cy)}
+footer{text-align:center;color:var(--mu);font-size:.78rem;padding:50px 20px}
+:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+@media(min-width:900px){.ar{transform:rotate(-90deg)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+<nav>
+<b>FERRO SEARCH</b>
+<a href="#home">HOME</a><a href="#tm">TEMPLATE MATCHING</a><a href="#vj">VIOLA-JONES</a><a href="#df">DEEPFACE</a><a href="#fn">FACENET</a><a href="#cmp">COMPARE</a><a href="#privacy">PRIVACY</a><a href="#about">ABOUT</a>
+</nav>
+
+<section id="home" class="hero">
+<h1>FERRO SEARCH</h1>
+<div class="tag">Explore. Detect. Recognize.</div>
+<p class="lead">An interactive computer-vision laboratory for understanding object detection, face detection and face recognition.</p>
+<div class="row" style="justify-content:center">
+<a class="btn" href="#cards">EXPLORE ALGORITHMS</a><a class="btn ghost" href="#tm">TRY LIVE DEMO</a>
+</div>
+<div id="cvStatus" class="banner warn">Loading OpenCV.js...</div>
+<div class="pipe">
+<span class="st">INPUT IMAGE</span><span class="ar">↓</span><span class="st">PREPROCESSING</span><span class="ar">↓</span><span class="st">DETECTION</span><span class="ar">↓</span><span class="st">FEATURE EXTRACTION</span><span class="ar">↓</span><span class="st">MATCHING</span><span class="ar">↓</span><span class="st">RESULT</span>
+</div>
+<div id="cards" class="grid" style="text-align:left;margin-top:30px">
+<a href="#tm" style="text-decoration:none;color:inherit" class="card"><h3>Template Matching</h3><p>Slide a small template over a large image and score every position. Runs for real with OpenCV.js.</p></a>
+<a href="#vj" style="text-decoration:none;color:inherit" class="card"><h3>Viola-Jones</h3><p>Haar features, integral images, AdaBoost and a cascade for fast face detection.</p></a>
+<a href="#df" style="text-decoration:none;color:inherit" class="card"><h3>DeepFace</h3><p>A deep-learning face verification pipeline: detect, align, embed, compare.</p></a>
+<a href="#fn" style="text-decoration:none;color:inherit" class="card"><h3>FaceNet</h3><p>Learns a face embedding with triplet loss so distance means identity.</p></a>
+</div>
+</section>
+
+<section id="tm">
+<h2>Template Matching</h2>
+<p class="lead">Upload a large target image and a smaller template. OpenCV.js runs <code>cv.matchTemplate()</code> and <code>cv.minMaxLoc()</code> on the original pixels in your browser.</p>
+<div class="card">
+<div class="imgs">
+<div><label class="up">Target image (the large image to search)</label><input type="file" id="tmT" accept="image/*"><div style="margin-top:8px"><img id="tmTp" alt="" hidden></div></div>
+<div><label class="up">Template image (the smaller object to find)</label><input type="file" id="tmP" accept="image/*"><div style="margin-top:8px"><img id="tmPp" alt="" hidden></div></div>
+</div>
+<div class="row">
+<label class="up" style="margin:0">Method</label>
+<select id="tmM"><option value="TM_CCOEFF_NORMED">TM_CCOEFF_NORMED</option><option value="TM_CCORR_NORMED">TM_CCORR_NORMED</option><option value="TM_SQDIFF_NORMED">TM_SQDIFF_NORMED</option></select>
+<label class="up" style="margin:0 0 0 10px">Similarity threshold: <b id="tmThV" style="color:var(--cy)">70%</b></label>
+<input type="range" id="tmTh" min="0" max="100" value="70">
+</div>
+<div class="row">
+<button class="btn" id="tmSample">USE SAMPLE IMAGES</button><button class="btn" id="tmRun">RUN TEMPLATE MATCHING</button><button class="btn ghost" id="tmReset">RESET</button>
+</div>
+<div id="tmMsg" class="msg" role="status"></div>
+<div class="out"><canvas id="tmOut" width="2" height="2" hidden></canvas></div>
+<div class="stats" id="tmStats" hidden>
+<div class="stat"><small>STATUS</small><span id="rS">-</span></div>
+<div class="stat"><small>MATCHING SCORE</small><span id="rSc">-</span></div>
+<div class="stat"><small>THRESHOLD</small><span id="rTh">-</span></div>
+<div class="stat"><small>CONFIDENCE</small><span id="rCf">-</span></div>
+<div class="stat"><small>COORDINATES</small><span id="rXY">-</span></div>
+<div class="stat"><small>TEMPLATE REGION</small><span id="rWH">-</span></div>
+<div class="stat"><small>PROCESSING TIME</small><span id="rMs">-</span></div>
+<div class="stat"><small>MATCHING METHOD</small><span id="rMt">-</span></div>
+</div>
+<p style="color:var(--mu);font-size:.78rem;margin-bottom:0">Confidence = how far the best score stands above the average score of the whole result map. The threshold only changes the MATCH / NO MATCH decision, never the score. The sample target is a procedurally drawn vegetable scene, and the sample template is an exact crop of it taken in your browser.</p>
+</div>
+</section>
+
+<section id="vj">
+<h2>Viola-Jones</h2>
+<p class="lead">The classic real-time face detector. This demo loads OpenCV's pre-trained frontal-face Haar cascade when the network allows it.</p>
+<div class="card">
+<div id="vjMode" class="banner warn">Waiting for OpenCV.js...</div>
+<div class="row"><input type="file" id="vjF" accept="image/*" style="max-width:320px">
+<button class="btn" id="vjSample">USE SAMPLE IMAGE</button><button class="btn" id="vjRun">DETECT FACES</button><button class="btn ghost" id="vjReset">RESET</button></div>
+<div id="vjMsg" class="msg" role="status"></div>
+<div class="out"><canvas id="vjOut" width="2" height="2" hidden></canvas></div>
+<div class="stats"><div class="stat"><small>FACES DETECTED</small><span id="vjN">-</span></div><div class="stat"><small>PROCESSING TIME</small><span id="vjMs">-</span></div></div>
+<p style="color:var(--mu);font-size:.78rem">The sample is a simple synthetic drawing; real photographs give far more reliable detections. Whatever the cascade finds (including zero faces) is reported as-is.</p>
+<div class="pipe"><span class="st">IMAGE</span><span class="ar">↓</span><span class="st">HAAR FEATURES</span><span class="ar">↓</span><span class="st">ADABOOST</span><span class="ar">↓</span><span class="st">CASCADE CLASSIFIER</span><span class="ar">↓</span><span class="st">FACE DETECTION</span></div>
+<div class="grid">
+<div><h3>Haar-like Features</h3><p>Rectangles of light and dark pixels, such as the darker eye band above brighter cheeks. A feature's value is the sum under the white area minus the sum under the black area.</p></div>
+<div><h3>Integral Image</h3><p>Each pixel stores the sum of everything above and to its left, so any rectangle sum needs just four lookups regardless of size.</p></div>
+<div><h3>AdaBoost</h3><p>Picks the few most useful features out of thousands and combines many weak classifiers into one strong classifier.</p></div>
+<div><h3>Cascade Classifier</h3><p>Stages run from cheap to complex. Most background windows are rejected in the first stages, which makes detection fast.</p></div>
+</div>
+</div>
+</section>
+
+<section id="df">
+<h2>DeepFace</h2>
+<p class="lead">DeepFace (Facebook, 2014) verifies faces with a deep neural network trained on millions of faces.</p>
+<div class="card">
+<div class="banner">DeepFace Concept Demonstration</div>
+<div class="pipe"><span class="st">Face Detection</span><span class="ar">↓</span><span class="st">Face Alignment</span><span class="ar">↓</span><span class="st">Deep Neural Network</span><span class="ar">↓</span><span class="st">Feature Extraction</span><span class="ar">↓</span><span class="st">Face Verification</span></div>
+<p style="color:var(--mu)">No DeepFace network runs in this page. To show the verification step (compare two feature vectors), the button below uses a simple stand-in descriptor: each image is shrunk to 16x16 grayscale, centred and normalised. The numbers are real maths on that descriptor, not DeepFace output, and they do not indicate identity.</p>
+<div class="imgs"><div><label class="up">Face image A</label><input type="file" id="dfA" accept="image/*"><img id="dfAp" alt="" hidden style="margin-top:8px"></div>
+<div><label class="up">Face image B</label><input type="file" id="dfB" accept="image/*"><img id="dfBp" alt="" hidden style="margin-top:8px"></div></div>
+<div class="row"><button class="btn" id="dfRun">COMPARE</button></div>
+<div id="dfMsg" class="msg" role="status"></div>
+<div class="stats" id="dfOut" hidden></div>
+</div>
+</section>
+
+<section id="fn">
+<h2>FaceNet</h2>
+<p class="lead">FaceNet (Google, 2015) maps a face to a compact embedding so that distance directly reflects similarity.</p>
+<div class="card">
+<div class="banner">FaceNet Educational Demonstration</div>
+<div class="pipe"><span class="st">FACE IMAGE</span><span class="ar">↓</span><span class="st">CNN</span><span class="ar">↓</span><span class="st">FACE EMBEDDING</span><span class="ar">↓</span><span class="st">DISTANCE</span><span class="ar">↓</span><span class="st">VERIFICATION</span></div>
+<p style="color:var(--mu)">No FaceNet model runs here. The metrics below are computed on the same stand-in 256-value pixel descriptor as the DeepFace section, not on real FaceNet embeddings.</p>
+<div class="imgs"><div><label class="up">Face image A</label><input type="file" id="fnA" accept="image/*"><img id="fnAp" alt="" hidden style="margin-top:8px"></div>
+<div><label class="up">Face image B</label><input type="file" id="fnB" accept="image/*"><img id="fnBp" alt="" hidden style="margin-top:8px"></div></div>
+<div class="row"><label class="up" style="margin:0">Cosine threshold: <b id="fnThV" style="color:var(--cy)">80%</b></label><input type="range" id="fnTh" min="0" max="100" value="80"><button class="btn" id="fnRun">COMPARE</button></div>
+<div id="fnMsg" class="msg" role="status"></div>
+<div class="stats" id="fnOut" hidden></div>
+<div class="grid" style="margin-top:20px">
+<div><h3>Anchor</h3><p>A reference face image.</p></div>
+<div><h3>Positive</h3><p>Another image of the same person as the anchor.</p></div>
+<div><h3>Negative</h3><p>An image of a different person.</p></div>
+<div><h3>Triplet loss</h3><p><code>L = max(‖f(a) − f(p)‖² − ‖f(a) − f(n)‖² + α, 0)</code>. Training pulls the positive close and pushes the negative at least a margin α away.</p></div>
+</div>
+</div>
+</section>
+
+<section id="cmp">
+<h2>Compare</h2>
+<div class="card tblw"><table>
+<tr><th>Feature</th><th>Template Matching</th><th>Viola-Jones</th><th>DeepFace</th><th>FaceNet</th></tr>
+<tr><td>Purpose</td><td>Find a known patch inside an image</td><td>Detect faces</td><td>Verify and recognise faces</td><td>Verify, recognise and cluster faces</td></tr>
+<tr><td>Input</td><td>Target image + template</td><td>Image or video frame</td><td>Two aligned face images</td><td>Cropped face images</td></tr>
+<tr><td>Output</td><td>Best location and score</td><td>Face bounding boxes</td><td>Same / different decision</td><td>Embedding vector and distance</td></tr>
+<tr><td>Technique</td><td>Sliding-window correlation</td><td>Haar features, integral image, cascade</td><td>Deep CNN with 3D alignment</td><td>Deep CNN with triplet loss</td></tr>
+<tr><td>Speed</td><td>Fast for small templates</td><td>Very fast, real time on CPU</td><td>Slower, benefits from GPU</td><td>Slower, benefits from GPU</td></tr>
+<tr><td>Machine Learning</td><td>No</td><td>Yes (AdaBoost, classical)</td><td>Yes (deep learning)</td><td>Yes (deep learning)</td></tr>
+<tr><td>Typical Use</td><td>Part inspection, UI testing, simple object finding</td><td>Camera autofocus, face counting</td><td>Identity verification research</td><td>Photo grouping, face search research</td></tr>
+</table></div>
+</section>
+
+<section id="privacy">
+<h2>Privacy &amp; Responsible Use</h2>
+<div class="card">
+<h3>Your images belong to you.</h3>
+<ul>
+<li>Only use images you have permission to analyze.</li>
+<li>Avoid uploading sensitive or private images.</li>
+<li>Face recognition results are not proof of identity.</li>
+<li>Do not use this project for unauthorized surveillance.</li>
+<li>Do not track people without consent.</li>
+<li>Do not use it for high-impact decisions.</li>
+</ul>
+<p>Processed locally in your browser when supported. The only network requests are loading OpenCV.js, the Haar cascade file and the web font.</p>
+<button class="btn danger" id="clearAll">CLEAR ALL IMAGES</button>
+<div id="clrMsg" class="msg info" role="status"></div>
+</div>
+</section>
+
+<section id="about">
+<h2>About</h2>
+<div class="card">
+<p>FERRO SEARCH is an educational Image and Video Analysis project demonstrating classical computer vision and modern face-recognition concepts.</p>
+<p><b>Topics:</b> Template Matching, Viola-Jones, DeepFace, FaceNet.</p>
+<p><b>Student Name:</b> Pavithra Suresh<br><b>Department:</b> Artificial Intelligence and Data Science<br><b>College:</b> SRM Valliammai Engineering College</p>
+</div>
+</section>
+<footer>FERRO SEARCH · Explore. Detect. Recognize.</footer>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const S={t:null,tp:null,v:null,dfA:null,dfB:null,fnA:null,fnB:null};
+let CV=null,cvReady=false,casc=null,last=null,vjData=null;
+const CASCADE_URL='https://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_frontalface_default.xml';
+const NAMES={TM_CCOEFF_NORMED:'Normalized Correlation Coefficient',TM_CCORR_NORMED:'Normalized Cross Correlation',TM_SQDIFF_NORMED:'Normalized Squared Difference'};
+
+function msg(id,t,type){const e=$(id);e.textContent=t||'';e.className='msg'+(type?' '+type:'')}
+function loadFile(f){return new Promise((res,rej)=>{
+  if(!f||!/^image\//.test(f.type))return rej(new Error('Invalid file: please choose an image (PNG, JPG or WEBP).'));
+  const u=URL.createObjectURL(f),im=new Image();
+  im.onload=()=>res(im);
+  im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('Invalid image: the file could not be decoded.'))};
+  im.src=u;});}
+function loadSrc(src){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>rej(new Error('Could not load sample image.'));im.src=src;});}
+function show(prevId,im){const p=$(prevId);p.src=im.src;p.hidden=false;}
+function bind(inp,key,prev,msgId,after){
+  $(inp).addEventListener('change',async e=>{
+    const f=e.target.files[0];if(!f)return;
+    try{const im=await loadFile(f);S[key]=im;if(prev)show(prev,im);msg(msgId,'');if(after)after();}
+    catch(err){S[key]=null;if(prev)$(prev).hidden=true;msg(msgId,err.message,'err');}});}
+
+/* ---------- OpenCV readiness ---------- */
+function onCv(){
+  if(cvReady||!(window.cv&&window.cv.Mat))return;cvReady=true;CV=window.cv;
+  const s=$('cvStatus');s.textContent='OpenCV.js ready';s.className='banner';
+  loadCascade();
+}
+let thenCalled=false;
+const poll=setInterval(()=>{
+  if(window.cv&&window.cv.Mat){clearInterval(poll);onCv();return;}
+  if(window.cv&&typeof window.cv.then==='function'&&!thenCalled){thenCalled=true;
+    window.cv.then(m=>{if(m&&m.Mat){window.cv=m;}});}
+},150);
+const CV_SRCS=['https://docs.opencv.org/4.5.0/opencv.js','https://docs.opencv.org/4.x/opencv.js','https://cdn.jsdelivr.net/npm/@techstark/opencv-js@4.9.0-release.2/dist/opencv.js'];
+let cvTry=-1;
+function loadCv(i){
+  if(cvReady||i<=cvTry)return;
+  cvTry=i;
+  const s=$('cvStatus');
+  if(i>=CV_SRCS.length){s.textContent='OpenCV.js could not be loaded from any source. Check your internet connection or firewall, then reload. Open the browser console (F12) to see the blocked URL.';s.className='banner warn';return;}
+  s.textContent='Loading OpenCV.js (source '+(i+1)+' of '+CV_SRCS.length+', about 10 MB, please wait)...';
+  window.Module=window.Module||{};
+  window.Module.onRuntimeInitialized=onCv;
+  const el=document.createElement('script');
+  el.src=CV_SRCS[i];el.async=true;
+  el.onerror=()=>loadCv(i+1);
+  document.head.appendChild(el);
+}
+loadCv(0);
+
+/* ---------- Template Matching ---------- */
+bind('tmT','t','tmTp','tmMsg');
+bind('tmP','tp','tmPp','tmMsg');
+$('tmTh').addEventListener('input',()=>{$('tmThV').textContent=$('tmTh').value+'%';if(last)renderTM();});
+$('tmM').addEventListener('change',()=>{last=null;$('tmStats').hidden=true;$('tmOut').hidden=true;});
+
+function rng(s){return()=>(s=(s*1664525+1013904223)>>>0)/4294967296;}
+function makeSample(){
+  const W=640,H=420,c=document.createElement('canvas');c.width=W;c.height=H;
+  const g=c.getContext('2d'),r=rng(7);
+  g.fillStyle='#3b2a1d';g.fillRect(0,0,W,H);
+  const cols=[['#ff4b3a','#8f1208'],['#ffb020','#a85d00'],['#7ed321','#2d6a04'],['#ff7a00','#8a3a00'],['#b030d0','#4a0a60'],['#f4e04d','#9a8a00'],['#2fbf71','#0b5a30']];
+  for(let i=0;i<30;i++){
+    const x=r()*W,y=r()*H,rx=22+r()*38,ry=18+r()*32,k=cols[i%cols.length];
+    const gr=g.createRadialGradient(x-rx/3,y-ry/3,3,x,y,Math.max(rx,ry));
+    gr.addColorStop(0,k[0]);gr.addColorStop(1,k[1]);
+    g.fillStyle=gr;g.beginPath();g.ellipse(x,y,rx,ry,r()*3,0,6.283);g.fill();
+    g.fillStyle='#2e7d32';g.fillRect(x-3,y-ry-6,6,8);
+  }
+  const d=g.getImageData(0,0,W,H),p=d.data;
+  for(let i=0;i<p.length;i+=4){const n=(r()-.5)*26;p[i]+=n;p[i+1]+=n;p[i+2]+=n;}
+  g.putImageData(d,0,0);
+  const cx=Math.round(W*0.42),cy=Math.round(H*0.33),cw=110,ch=90;
+  const t=document.createElement('canvas');t.width=cw;t.height=ch;
+  t.getContext('2d').drawImage(c,cx,cy,cw,ch,0,0,cw,ch);
+  return{target:c.toDataURL('image/png'),tpl:t.toDataURL('image/png')};
+}
+$('tmSample').addEventListener('click',async()=>{
+  try{const s=makeSample();
+    S.t=await loadSrc(s.target);S.tp=await loadSrc(s.tpl);
+    show('tmTp',S.t);show('tmPp',S.tp);
+    runTM();
+  }catch(e){msg('tmMsg',e.message,'err');}});
+$('tmRun').addEventListener('click',runTM);
+
+function runTM(){
+  const cv=CV;
+  msg('tmMsg','');
+  if(!cvReady)return msg('tmMsg','OpenCV.js is not loaded yet. Wait for "OpenCV.js ready" on the Home section, then try again.','err');
+  if(!S.t)return msg('tmMsg','No target image: upload a target image or use the sample images.','err');
+  if(!S.tp)return msg('tmMsg','No template image: upload a template image or use the sample images.','err');
+  let src,tpl,s3,t3,res,mean,std;
+  try{
+    src=cv.imread(S.t);tpl=cv.imread(S.tp);
+    if(tpl.cols>src.cols||tpl.rows>src.rows)throw new Error('Template ('+tpl.cols+'x'+tpl.rows+') is larger than the target ('+src.cols+'x'+src.rows+'). Use a template that is smaller than the target.');
+    s3=new cv.Mat();t3=new cv.Mat();
+    cv.cvtColor(src,s3,cv.COLOR_RGBA2RGB);cv.cvtColor(tpl,t3,cv.COLOR_RGBA2RGB);
+    const mName=$('tmM').value,method=cv[mName];
+    const t0=performance.now();
+    res=new cv.Mat();
+    cv.matchTemplate(s3,t3,res,method);
+    const mm=cv.minMaxLoc(res);
+    const sq=mName==='TM_SQDIFF_NORMED';
+    const loc=sq?mm.minLoc:mm.maxLoc;
+    const best=sq?1-mm.minVal:mm.maxVal;
+    mean=new cv.Mat();std=new cv.Mat();
+    cv.meanStdDev(res,mean,std);
+    const ms=performance.now()-t0;
+    const mv=mean.data64F[0],meanScore=sq?1-mv:mv;
+    if(!isFinite(best)||!isFinite(loc.x))throw new Error('The template has no texture (for example a flat colour), so a score could not be computed. Choose a more detailed template.');
+    let conf=(best-meanScore)/(1-meanScore);if(!isFinite(conf))conf=0;
+    last={bx:loc.x,by:loc.y,tw:tpl.cols,th:tpl.rows,W:src.cols,H:src.rows,score:Math.max(0,Math.min(1,best))*100,rawScore:best*100,conf:Math.max(0,Math.min(100,conf*100)),ms:ms,method:mName};
+    renderTM();
+  }catch(e){
+    last=null;msg('tmMsg',e.message||('Processing error: '+e),'err');
+  }finally{
+    [src,tpl,s3,t3,res,mean,std].forEach(m=>{try{m&&m.delete()}catch(_){}});
+  }
+}
+function renderTM(){
+  const L=last,th=+$('tmTh').value,ok=L.score>=th;
+  const c=$('tmOut');c.hidden=false;
+  c.width=L.W;c.height=L.H;                       /* original image resolution */
+  const g=c.getContext('2d');
+  g.drawImage(S.t,0,0,L.W,L.H);
+  g.lineWidth=Math.max(2,Math.round(L.W/250));
+  g.strokeStyle=ok?'#00ff9c':'#ff4d6d';
+  g.strokeRect(L.bx,L.by,L.tw,L.th);              /* exactly template-sized box at the best location */
+  $('tmStats').hidden=false;
+  const st=$('rS');st.textContent=ok?'MATCH FOUND':'NO MATCH';st.className=ok?'ok':'no';
+  $('rSc').textContent=L.score.toFixed(2)+'%';
+  $('rTh').textContent=th+'%';
+  $('rCf').textContent=L.conf.toFixed(2)+'%';
+  $('rXY').textContent='X: '+L.bx+'  Y: '+L.by;
+  $('rWH').textContent=L.tw+' × '+L.th+' px';
+  $('rMs').textContent=L.ms.toFixed(1)+' ms';
+  $('rMt').textContent=NAMES[L.method];
+  msg('tmMsg',ok?'Match found. Box drawn at the best-scoring location.':'Best score is below the threshold, so this is reported as NO MATCH. The red box shows where the best candidate was.','info');
+}
+$('tmReset').addEventListener('click',resetTM);
+function resetTM(){
+  S.t=S.tp=null;last=null;
+  ['tmT','tmP'].forEach(i=>$(i).value='');
+  ['tmTp','tmPp'].forEach(i=>{$(i).hidden=true;$(i).removeAttribute('src');});
+  $('tmOut').hidden=true;$('tmStats').hidden=true;msg('tmMsg','');
+}
+
+/* ---------- Viola-Jones ---------- */
+bind('vjF','v',null,'vjMsg',()=>{vjDraw([]);$('vjN').textContent='-';$('vjMs').textContent='-';});
+async function loadCascade(){
+  const cv=CV;
+  const m=$('vjMode');
+  try{
+    const r=await fetch(CASCADE_URL);if(!r.ok)throw new Error('HTTP '+r.status);
+    const buf=new Uint8Array(await r.arrayBuffer());
+    cv.FS_createDataFile('/','cascade.xml',buf,true,false,false);
+    const cl=new cv.CascadeClassifier();
+    if(!cl.load('cascade.xml'))throw new Error('load failed');
+    casc=cl;m.textContent='Real Haar cascade loaded (haarcascade_frontalface_default)';m.className='banner';
+  }catch(e){
+    casc=null;m.textContent='Educational Demonstration Mode: the Haar cascade file could not be loaded, so no detection is run and no results are faked.';m.className='banner warn';
+  }
+}
+function vjDraw(rects){
+  if(!S.v)return;
+  const c=$('vjOut');c.hidden=false;c.width=S.v.naturalWidth;c.height=S.v.naturalHeight;
+  const g=c.getContext('2d');g.drawImage(S.v,0,0);
+  g.lineWidth=Math.max(2,Math.round(c.width/200));g.strokeStyle='#19e3ff';
+  rects.forEach(r=>g.strokeRect(r.x,r.y,r.w,r.h));
+}
+$('vjSample').addEventListener('click',async()=>{
+  const c=document.createElement('canvas');c.width=c.height=400;const g=c.getContext('2d');
+  g.fillStyle='#cfd8e6';g.fillRect(0,0,400,400);
+  g.fillStyle='#e8b894';g.beginPath();g.ellipse(200,205,105,135,0,0,6.283);g.fill();
+  g.fillStyle='#3a2a20';g.beginPath();g.ellipse(200,110,105,50,0,Math.PI,0);g.fill();
+  g.fillStyle='#fff';[150,250].forEach(x=>{g.beginPath();g.ellipse(x,185,22,12,0,0,6.283);g.fill()});
+  g.fillStyle='#2a1a10';[150,250].forEach(x=>{g.beginPath();g.arc(x,185,8,0,6.283);g.fill()});
+  g.strokeStyle='#8a5a40';g.lineWidth=5;g.beginPath();g.moveTo(200,195);g.lineTo(190,245);g.lineTo(210,245);g.stroke();
+  g.strokeStyle='#a03030';g.lineWidth=7;g.beginPath();g.arc(200,275,38,.15*Math.PI,.85*Math.PI);g.stroke();
+  S.v=await loadSrc(c.toDataURL('image/png'));vjDraw([]);msg('vjMsg','Sample loaded (synthetic drawing). Click DETECT FACES.','info');
+});
+$('vjRun').addEventListener('click',()=>{
+  const cv=CV;
+  msg('vjMsg','');
+  if(!cvReady)return msg('vjMsg','OpenCV.js is not loaded yet.','err');
+  if(!S.v)return msg('vjMsg','No image: upload an image or use the sample image.','err');
+  if(!casc)return msg('vjMsg','Educational Demonstration Mode: the Haar cascade is not available, so detection cannot run.','err');
+  let src,gray,faces;
+  try{
+    src=cv.imread(S.v);gray=new cv.Mat();cv.cvtColor(src,gray,cv.COLOR_RGBA2GRAY);cv.equalizeHist(gray,gray);
+    faces=new cv.RectVector();
+    const t0=performance.now();
+    casc.detectMultiScale(gray,faces,1.1,4,0,new cv.Size(30,30),new cv.Size(0,0));
+    const ms=performance.now()-t0,rects=[];
+    for(let i=0;i<faces.size();i++){const f=faces.get(i);rects.push({x:f.x,y:f.y,w:f.width,h:f.height});}
+    vjDraw(rects);$('vjN').textContent=rects.length;$('vjMs').textContent=ms.toFixed(1)+' ms';
+    msg('vjMsg',rects.length?rects.length+' face(s) detected.':'No faces detected in this image.','info');
+  }catch(e){msg('vjMsg','Processing error: '+(e.message||e),'err');}
+  finally{[src,gray,faces].forEach(m=>{try{m&&m.delete()}catch(_){}});}
+});
+$('vjReset').addEventListener('click',resetVJ);
+function resetVJ(){S.v=null;$('vjF').value='';$('vjOut').hidden=true;$('vjN').textContent='-';$('vjMs').textContent='-';msg('vjMsg','');}
+
+/* ---------- DeepFace / FaceNet stand-in comparison ---------- */
+function descriptor(im){
+  const c=document.createElement('canvas');c.width=c.height=16;const g=c.getContext('2d');
+  g.drawImage(im,0,0,16,16);const d=g.getImageData(0,0,16,16).data;let v=[];
+  for(let i=0;i<d.length;i+=4)v.push(.299*d[i]+.587*d[i+1]+.114*d[i+2]);
+  const m=v.reduce((a,b)=>a+b,0)/v.length;v=v.map(x=>x-m);
+  const n=Math.hypot.apply(null,v)||1;return v.map(x=>x/n);
+}
+function pair(p,thId){
+  bind(p+'A',p+'A',p+'Ap',p+'Msg');bind(p+'B',p+'B',p+'Bp',p+'Msg');
+  $(p+'Run').addEventListener('click',()=>{
+    msg(p+'Msg','');
+    if(!S[p+'A']||!S[p+'B'])return msg(p+'Msg','Please upload both Face image A and Face image B.','err');
+    const a=descriptor(S[p+'A']),b=descriptor(S[p+'B']);
+    let dot=0,ss=0;for(let i=0;i<a.length;i++){dot+=a[i]*b[i];ss+=(a[i]-b[i])*(a[i]-b[i]);}
+    const th=thId?+$(thId).value/100:0.8,ok=dot>=th;
+    const o=$(p+'Out');o.hidden=false;
+    o.innerHTML='<div class="stat"><small>COSINE SIMILARITY</small><span>'+dot.toFixed(4)+'</span></div>'+
+      '<div class="stat"><small>EUCLIDEAN DISTANCE</small><span>'+Math.sqrt(ss).toFixed(4)+'</span></div>'+
+      '<div class="stat"><small>THRESHOLD (COSINE)</small><span>'+th.toFixed(2)+'</span></div>'+
+      '<div class="stat"><small>RESULT</small><span class="'+(ok?'ok':'no')+'">'+(ok?'MATCH':'NO MATCH')+'</span></div>';
+    msg(p+'Msg','Computed on a stand-in pixel descriptor, not a neural embedding. Not evidence of identity.','info');
+  });
+}
+pair('df',null);pair('fn','fnTh');
+$('fnTh').addEventListener('input',()=>{$('fnThV').textContent=$('fnTh').value+'%';});
+
+/* ---------- Privacy: clear everything ---------- */
+$('clearAll').addEventListener('click',()=>{
+  resetTM();resetVJ();
+  ['dfA','dfB','fnA','fnB'].forEach(k=>{S[k]=null;$(k).value='';$(k+'p').hidden=true;$(k+'p').removeAttribute('src');});
+  ['dfOut','fnOut'].forEach(i=>{$(i).hidden=true;$(i).innerHTML='';});
+  ['dfMsg','fnMsg'].forEach(i=>msg(i,''));
+  msg('clrMsg','All uploaded images and results have been removed from this page.','info');
+});
+})();
+</script>
+</body>
+</html>
